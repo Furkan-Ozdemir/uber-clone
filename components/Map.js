@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import tailwind from "twrnc";
@@ -18,12 +18,37 @@ const Map = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // androidde calismiyor
     if (!origin || !destination) return;
 
-    mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-      edgePadding: 50,
-    });
+    if (Platform.OS === "ios") {
+      mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
+        edgePadding: 50,
+      });
+      // } else {
+      //   mapRef.current.fitToCoordinates([origin, destination], {
+      //     edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+      //   });
+    }
   }, [origin, destination]);
+
+  const handleFitMarkersAndroid = () => {
+    // console.log(origin.location);
+    // console.log(destination.location);
+    if (!origin || !destination) return;
+    mapRef.current.fitToCoordinates(
+      [
+        { latitude: origin.location.lat, longitude: origin.location.lng },
+        {
+          latitude: destination.location.lat,
+          longitude: destination.location.lng,
+        },
+      ],
+      {
+        edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+      }
+    );
+  };
 
   useEffect(() => {
     if (!origin || !destination) return;
@@ -50,6 +75,7 @@ const Map = () => {
         latitudeDelta: 0.005,
         longitudeDelta: 0.005,
       }}
+      onLayout={Platform.OS === "android" ? handleFitMarkersAndroid : null}
     >
       {origin && destination && (
         <MapViewDirections

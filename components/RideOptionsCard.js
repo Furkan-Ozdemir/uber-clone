@@ -53,7 +53,7 @@ const RideOptionsCard = () => {
           <Icon name="chevron-left" type="fontawesome" />
         </TouchableOpacity>
         <Text style={tailwind`text-center text-xl`}>
-          Select a Ride - {travelTimeInformation?.distance.text}
+          Select a Ride - {travelTimeInformation?.distance?.text}
         </Text>
       </View>
       <FlatList
@@ -75,13 +75,13 @@ const RideOptionsCard = () => {
                 <Text style={tailwind`text-xl font-semibold`}>
                   {item.title}
                 </Text>
-                <Text>{travelTimeInformation?.duration.text} Travel time</Text>{" "}
+                <Text>{travelTimeInformation?.duration?.text} Travel time</Text>
                 {/* // TODO loading state ekle NaN geliyor */}
               </View>
               <Text style={tailwind`text-xl`}>
                 $
                 {(
-                  (travelTimeInformation?.duration.value * item.multiplier) /
+                  (travelTimeInformation?.duration?.value * item.multiplier) /
                   100
                 ).toFixed(2)}
               </Text>
